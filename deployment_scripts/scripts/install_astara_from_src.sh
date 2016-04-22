@@ -75,19 +75,13 @@ chdir /var/run
 exec start-stop-daemon --start --chuid astara --exec /usr/bin/astara-orchestrator -- --config-file=/etc/astara/orchestrator.ini
 END
 
-# This is an inflight backport that needs to merge.
-# Cherry-pick it in the meantime if it doesn't exist in stable yet
-endpoint_change_id="I9432b4df8a5b4fc9f0cc06e6ffb662df634ec4f8"
-if ! $(cd $dest && git log | grep $endpoint_change_id); then
-	(cd $dest && git cherry-pick -x b305beacd485a3954b2c7838a0f460a177711642)
-fi
-
 if ! which astara-orchestrator; then
 	$venv/bin/pip install -r $dest/requirements.txt $dest
 	$venv/bin/pip install "PyMySQL>=0.6.2"
 	$venv/bin/pip install "MySQL-python;python_version=='2.7'"
 	for bin in $(ls $venv/bin/astara*) ; do
-		echo $bin
-		ln -s $bin /usr/bin/$(basename $bin)
+    if [[ ! -e /usr/bin/$(basename $bin) ]]; then
+      ln -s $bin /usr/bin/$(basename $bin)
+    fi
 	done
 fi
