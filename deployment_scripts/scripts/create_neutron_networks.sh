@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if ! which neutron; then
+  sudo apt-get -y install python-neutronclient
+fi
+
 source /root/openrc
 
 source $(dirname $0)/functions

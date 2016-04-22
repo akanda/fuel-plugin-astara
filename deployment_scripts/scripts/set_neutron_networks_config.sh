@@ -6,6 +6,10 @@ source /root/openrc
 
 source $(dirname $0)/functions
 
+if ! which neutron; then
+    sudo apt-get -y install python-neutronclient
+fi
+
 mgt_name=${1:-"astara_mgmt"}
 mgt_prefix=${2:-"fdca:3ba5:a17a:acda::/64"}
 

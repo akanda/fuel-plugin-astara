@@ -25,6 +25,10 @@ if ! which openstack; then
         sudo apt-get install -y python-openstackclient
 fi
 
+if ! which neutron; then
+        sudo apt-get -y install python-neutronclient
+fi
+
 # glanceclient + openstack clients are a mess and cannot request at the internal
 # url.... :(
 internal_url=`openstack catalog show image -c endpoints -f value | grep internal | awk '{ print $2 }'`

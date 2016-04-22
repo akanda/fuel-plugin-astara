@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if ! which nova; then
+  sudo apt-get -y install python-novaclient
+fi
+
 ram=${1:-512}
 disk=${2:-3}
 vcpus=${3:-1}
