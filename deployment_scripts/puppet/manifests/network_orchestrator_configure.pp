@@ -108,3 +108,9 @@ astara_config {
     'coordination/enabled': value => 'True';
     'coordination/url': value => "memcached://${memcache_address}:11211";
 }
+
+# setup metadata proxy access
+astara_config {
+	'DEFAULT/nova_metadata_ip': value => $management_vip;
+	'DEFAULT/neutron_metadata_proxy_shared_secret': value => $neutron_settings["metadata"]["metadata_proxy_shared_secret"];
+}
