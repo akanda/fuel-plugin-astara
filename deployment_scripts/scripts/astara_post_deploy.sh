@@ -21,13 +21,21 @@ if ! which glance; then
         sudo apt-get install -y python-glanceclient
 fi
 
+if ! which openstack; then
+        sudo apt-get install -y python-glanceclient
+fi
+
+# glanceclient + openstack clients are a mess and cannot request at the internal
+# url.... :(
+internal_url=`openstack catalog show image -c endpoints -f value | grep internal | awk '{ print $2 }'`
+OS_IMG_URL="--os-image-url=$internal_url"
 
 function publish_image {
-        if glance image-list | grep $IMG_NAME; then
+        if glance $OS_IMG_URL image-list | grep $IMG_NAME; then
                 return
         fi
         echo "Publishing astara image into glance"
-        glance image-create --name $IMG_NAME --visibility=public --container-format=bare --disk-format=qcow2 --file $IMG_FILE
+        glance $OS_IMG_URL image-create --name $IMG_NAME --visibility=public --container-format=bare --disk-format=qcow2 --file $IMG_FILE
         echo "Published astara image $IMG_FILE into glance"
 }
 
@@ -35,7 +43,7 @@ function publish_image {
 function find_image {
         echo "Finding astara image in glance"
         for i in $(seq 0 $TIMEOUT); do
-            IMG_ID=$(glance image-list | grep $IMG_NAME | awk '{ print $2 }')
+            IMG_ID=$(glance $OS_IMG_URL image-list | grep $IMG_NAME | awk '{ print $2 }')
             echo $IMG_ID
             if [[ -n "$IMG_ID" ]]; then
                 echo "Found astara applinace image in glance /w id $IMG_ID"
