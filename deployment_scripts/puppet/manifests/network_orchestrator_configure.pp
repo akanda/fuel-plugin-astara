@@ -58,7 +58,7 @@ $db_user                    = pick($astara_settings['db_user'], 'astara')
 $db_name                    = pick($astara_settings['db_name'], 'astara')
 #$db_password                = pick($astara_settings['astara_db_password'], 'astara')
 $db_password                 = 'astara'
-$database_connection        = "mysql://${db_user}:${db_password}@${db_host}/${db_name}?charset=utf8&read_timeout=60"
+$database_connection        = "mysql://${db_user}:${db_password}@${db_host}/${db_name}?charset=utf8"
 astara_config {
     'database/connection': value => $database_connection;
 }
