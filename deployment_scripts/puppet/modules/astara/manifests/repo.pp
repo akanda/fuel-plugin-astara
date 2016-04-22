@@ -39,7 +39,7 @@ class astara::repo {
                 require => [
                     Apt::Ppa['ppa:astara-drivers/astara-mitaka'],
                     Apt::Source['ubuntu-cloud'],
-                    File['ovs-pin']
+                    Exec['remove-mos-pins']
                 ]
             }
         }
