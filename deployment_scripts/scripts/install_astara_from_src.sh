@@ -11,6 +11,10 @@ if ! which pip ; then
 	apt-get -y install python-pip
 fi
 
+if ! which git; then
+	apt-get -y install git
+fi
+
 if ! which virtualenv ; then
 	pip install virtualenv
 fi
