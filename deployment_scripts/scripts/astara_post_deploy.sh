@@ -22,7 +22,7 @@ if ! which glance; then
 fi
 
 if ! which openstack; then
-        sudo apt-get install -y python-glanceclient
+        sudo apt-get install -y python-openstackclient
 fi
 
 # glanceclient + openstack clients are a mess and cannot request at the internal
