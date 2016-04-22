@@ -27,6 +27,16 @@
 
 # Deployment Tasks
 # No idea what purpose this hiera override task serves.
+- id: network-orchestrator-pre-deployment-task
+  type: puppet
+  groups: [primary-controller, controller, primary-network-orchestrator-node, network-orchestrator-node]
+  requires: [pre_deployment_start]
+  required_for: [pre_deployment_end]
+  parameters:
+    puppet_manifest: puppet/manifests/network_orchestrator_pre_deployment.pp
+    puppet_modules:  puppet/modules:/etc/puppet/modules
+    timeout: 1800
+
 - id: network-orchestrator-hiera-override
   type: puppet
   groups: [primary-controller, controller, primary-network-orchestrator-node, network-orchestrator-node]
