@@ -1,0 +1,5 @@
+# This file is managed by Puppet. DO NOT EDIT.
+Explanation: : mos
+Package:  openvswitch-common openvswitch-datapath-dkms openvswitch-switch python-openvswitch
+Pin: release a=mos8.0, n=mos8.0, o=Mirantis, l=mos8.0
+Pin-Priority: 1050
