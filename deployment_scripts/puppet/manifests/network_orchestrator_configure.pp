@@ -99,6 +99,7 @@ class { 'openstack::auth_file':
 
 astara_config {
     'DEFAULT/endpoint_type': value => 'internalURL';
+    'DEFAULT/log_file': value => '/var/log/astara/astara-orchestrator.log';
 }
 
 # Setup coordination cluster services.
