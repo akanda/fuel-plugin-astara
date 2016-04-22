@@ -25,23 +25,12 @@ class astara::repo {
                 require => Package['ubuntu-cloud-keyring'],
             }
 
-            # when we are installing mitaka on astara node alongside liberty elsewhere,
-            # we need to ensure we pull down the correct dependencies, so we must remove
-            # the MOS pins to allow mitaka requirements.  we omit OVS from this to keep
-            # consitency there.
+            # when we are installing mitaka on astara node alongside liberty
+            # elsewhere, we need to ensure we pull down the correct
+            # dependencies, so we must remove # the MOS pins to allow mitaka
+            # requirements.
             exec { 'remove-mos-pins':
                 command => '/bin/rm /etc/apt/preferences.d/*.pref',
-            }
-
-            file { 'ovs-pin':
-                ensure  => present,
-                path    => '/etc/apt/preferences.d/ovs.pref',
-                source  => 'puppet:///modules/astara/ovs.pref',
-                replace => true,
-                owner   => '0',
-                group   => '0',
-                mode    => '0644',
-                require => Exec['remove-mos-pins'],
             }
 
             exec {

@@ -3,7 +3,7 @@ name: fuel-plugin-astara
 # Human-readable name for your plugin
 title: Use Astara Network Orchestrator
 # Plugin version
-version: '1.0.17'
+version: '1.0.18'
 # Description
 description: Enable to use Openstack Astara Network Orchestrator for Neutron Networking
 # Required fuel version
