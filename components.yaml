@@ -5,8 +5,9 @@
 # - https://specs.openstack.org/openstack/fuel-specs/specs/8.0/component-registry.html
 
 - name: 'additional_service:astara'
-  label: "Astara Network Orchestrator"
-  description: "Astara Network Orchestrator is a production grade L3-L7 Network Service Platform"
+  label: "Install Astara (Openstack Network Orchestrator)"
+  description: "If selected, Astara's Network Orchestrator will be installed. Astara
+    is a production grade L3-L7 Network Service Platform for Neutron"
   bind: !!pairs
     - "cluster:net_provider": "neutron"
   requires: 

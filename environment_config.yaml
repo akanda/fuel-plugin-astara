@@ -1,10 +1,16 @@
 attributes:
   metadata:
     restrictions:
-      - condition: "cluster:net_provider != 'neutron'"
-        message: "Please use Neutron Networking"
+      - action: hide
+        condition: "cluster:net_provider != 'neutron'"
       - condition: "settings:neutron_advanced_configuration.neutron_dvr.value == true"
         message: "Neutron DVR must be disabled in order to use Astara plugin"
+      - condition: "settings:neutron_advanced_configuration.neutron_l3_ha.value == true"
+        message: "Neutron L3 HA must be disabled in order to use Astara plugin"
+      - condition: "settings:public_network_assignment.assign_to_all_nodes.value == false"
+        message: "Enable Public Network Access for all nodes"
+      - condition: "settings:neutron_advanced_configuration.neutron_l2_pop.value == false and networking_parameters:segmentation_type != 'vlan'"
+        message: "Enable Neutron L2 Population"
     group: network
     astara_db_password:
         generator: "password"
