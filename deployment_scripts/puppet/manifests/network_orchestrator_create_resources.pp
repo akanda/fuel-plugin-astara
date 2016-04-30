@@ -1,5 +1,5 @@
 
 class { 'astara::db::sync': }
-class { 'astara::flavor': }
-class { 'astara::networks': }
+class { 'astara::flavor::create': }
+class { 'astara::networks::create': }
 
