@@ -114,3 +114,10 @@ astara_config {
 	'DEFAULT/nova_metadata_ip': value => $management_vip;
 	'DEFAULT/neutron_metadata_proxy_shared_secret': value => $neutron_settings["metadata"]["metadata_proxy_shared_secret"];
 }
+
+# TODO(adam_g): flavor ids are hard-coded as params to astara::flavor::create,
+# should be centralized somewhere.
+astara_config {
+	'router/instance_flavor': value => "511";
+	'loadbalancer/instance_flavor': value => "511";
+}

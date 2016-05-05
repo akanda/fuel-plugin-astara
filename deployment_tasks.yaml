@@ -73,7 +73,7 @@
 - id: network-orchestrator-node-astara-neutron-configure-task
   type: shell
   role: [primary-controller, controller]
-  requires: [network-orchestrator-node-astara-neutron-install-task]
+  requires: [post_deployment_start, network-orchestrator-node-astara-neutron-install-task]
   required_for: [post_deployment_end]
   parameters:
     cmd: ./scripts/controller_post_deploy.sh
@@ -130,22 +130,48 @@
     puppet_modules:  puppet/modules:/etc/puppet/modules
     timeout: 3800
 
+# This task creates neutron networks, nova flavors and syncs db
+# on the primary
 - id: network-orchestrator-node-create-resources-task
   type: puppet
-  groups: [primary-network-orchestrator-node, network-orchestrator-node]
+  groups: [primary-network-orchestrator-node]
   requires: [network-orchestrator-node-configure-task]
-  required_for: [deploy_end]
+  required_for: [network-orchestrator-node-set-resources-task]
   parameters:
     puppet_manifest: puppet/manifests/network_orchestrator_create_resources.pp
     puppet_modules:  puppet/modules:/etc/puppet/modules
     timeout: 1800
 
-- id: network-orchestrator-node-post-deployment-task
-  type: shell
-  role: [primary-network-orchestrator-node, network-orchestrator-node]
-  requires: [post_deployment_start]
-  required_for: [post_deployment_end]
+# This task configures non-primary nodes to use those created resources
+- id: network-orchestrator-node-set-resources-task
+  type: puppet
+  groups: [network-orchestrator-node]
+  requires: [network-orchestrator-node-create-resources-task]
+  required_for: [deploy_end]
   parameters:
-    cmd: ./scripts/astara_post_deploy.sh
+    puppet_manifest: puppet/manifests/network_orchestrator_set_resources.pp
+    puppet_modules:  puppet/modules:/etc/puppet/modules
     timeout: 1800
 
+
+- id: network-orchestrator-primary-node-post-deployment-task
+  type: shell
+  role: [primary-network-orchestrator-node]
+  requires: [post_deployment_start, upload_cirros]
+  required_for: [network-orchestrator-node-post-deployment-task]
+  parameters:
+    cmd: ./scripts/astara_post_deploy.sh primary-network-orchestrator-node
+    timeout: 1800
+    retries: 3
+    interval: 20
+
+- id: network-orchestrator-node-post-deployment-task
+  type: shell
+  role: [network-orchestrator-node]
+  requires: [network-orchestrator-primary-node-post-deployment-task]
+  required_for: [post_deployment_end]
+  parameters:
+    cmd: ./scripts/astara_post_deploy.sh network-orchestrator-node
+    timeout: 1800
+    retries: 3
+    interval: 20

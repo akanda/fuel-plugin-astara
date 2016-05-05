@@ -1,9 +1,12 @@
+
+notice('MODULAR: astara::astara_neutron::install')
+
 class astara::astara_neutron::install {
-	class { 'astara::repo': }
+	class { 'astara::repo::liberty': }
 
 	package { 'neutron-plugin-astara':
         ensure => present,
-        require => Class['astara::repo'],
+        require => Class['astara::repo::liberty'],
 	}
 
     # TODO: These will need to be special cased for when we deploy the Mitaka
